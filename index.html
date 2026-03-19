@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="si">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ප්‍රතිචාර පුවරුව | Reviews Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/4/4b/Emblem_of_Sri_Lanka.svg"
+        type="image/svg+xml">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="dashboard">
+        <header class="header">
+            <div>
+                <h2 class="sub-title">නාගොඩ ප්‍රාදේශීය ලේකම් කාර්යාලය</h2>
+                <h1>අපි ගැන අපිට කියන්න (Dashboard)</h1>
+            </div>
+            <div class="header-actions">
+                <button id="refreshBtn" class="action-btn refresh-btn">Refresh Data</button>
+                <button id="printBtn" class="action-btn">Print Report</button>
+                <button id="pdfBtn" class="action-btn pdf-btn">Download PDF</button>
+                <button id="clearBtn" class="clear-btn">Clear All Data</button>
+            </div>
+        </header>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Total Reviews</h3>
+                <p id="totalReviews">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>ඉතා හොඳයි <span class="emoji">🤩</span></h3>
+                <p id="veryHappyStats">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>හොඳයි <span class="emoji">😊</span></h3>
+                <p id="happyStats">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>අසතුටුදායකයි <span class="emoji">😞</span></h3>
+                <p id="badStats">0</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Rating</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Purpose</th>
+                        <th>Message</th>
+                        <th>Lang</th>
+                        <th class="no-print">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <footer class="footer">
+            © Copyright 2026. All rights reserved. Designed and developed by B.L.Sejan Randinu ©
+        </footer>
+    </div>
+    <script src="admin.js"></script>
+</body>
+
+</html>

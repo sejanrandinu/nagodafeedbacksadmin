@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadData() {
     const tableBody = document.getElementById('tableBody');
-    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 3rem; color: #64748B;">Loading...</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 3rem; color: #64748B;">Loading...</td></tr>';
 
     fetch(API_URL)
         .then(res => res.json())
@@ -64,7 +64,7 @@ function loadData() {
             tableBody.innerHTML = '';
 
             if (!reviews || reviews.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 3rem; color: #64748B;">No responses found yet.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 3rem; color: #64748B;">No responses found yet.</td></tr>';
                 updateStats(0, 0, 0, 0);
                 return;
             }
@@ -95,6 +95,7 @@ function loadData() {
                 <td>${escapeHtml(review.phone)}</td>
                 <td>${escapeHtml(review.address)}</td>
                 <td>${escapeHtml(review.purpose)}</td>
+                <td>${escapeHtml(review.task)}</td>
                 <td>${escapeHtml(review.message)}</td>
                 <td style="text-transform:uppercase; font-size:0.75rem; color:#64748B; font-weight:700;">${review.lang}</td>
                 <td class="no-print"><button class="row-delete-btn" onclick="deleteRow('${review.id}')">Delete</button></td>
@@ -107,7 +108,7 @@ function loadData() {
         })
         .catch(err => {
             console.error("Error loading data:", err);
-            tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 3rem; color: #EF4444;">Failed to load data. Please check your API connection.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 3rem; color: #EF4444;">Failed to load data. Please check your API connection.</td></tr>';
             updateStats(0, 0, 0, 0);
         });
 }

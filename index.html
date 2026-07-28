@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ප්‍රතිචාර පුවරුව | Admin Dashboard</title>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="admin.css?v=3">
     <link rel="icon" href="logo.jfif" type="image/jpeg">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap"
@@ -16,15 +16,15 @@
 <body>
     <!-- Admin Login Modal -->
     <div id="loginModal" class="login-modal-overlay">
-        <div class="login-card">
+        <div class="login-card" id="loginCard">
             <div class="login-emblem-wrapper">
                 <img src="logo.jfif" alt="Emblem" class="login-emblem">
             </div>
-            <h2>පාලන පුවරුව (Admin Login)</h2>
-            <p class="login-sub">කරුණාකර මුරපදය ඇතුළත් කරන්න</p>
-            <form id="loginForm">
+            <h2>පාලන පුවරුව</h2>
+            <p class="login-sub">Admin Login - කරුණාකර මුරපදය ඇතුළත් කරන්න</p>
+            <form id="loginForm" autocomplete="off">
                 <div class="form-group">
-                    <input type="password" id="adminPassword" placeholder="Password..." required autofocus>
+                    <input type="password" id="adminPassword" placeholder="Password..." required autofocus autocomplete="new-password">
                 </div>
                 <p id="loginError" class="login-error hidden">❌ වැරදි මුරපදයකි! නැවත උත්සාහ කරන්න.</p>
                 <button type="submit" class="login-submit-btn">ලොග් වන්න 🔓</button>
@@ -46,9 +46,9 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button id="refreshBtn" class="action-btn refresh-btn">🔄 Refresh Data</button>
-                <button id="printBtn" class="action-btn print-btn">🖨️ Print Report</button>
-                <button id="pdfBtn" class="action-btn pdf-btn">📥 Download PDF</button>
+                <button id="refreshBtn" class="action-btn refresh-btn">🔄 Refresh</button>
+                <button id="printBtn" class="action-btn print-btn">🖨️ Print</button>
+                <button id="pdfBtn" class="action-btn pdf-btn">📥 PDF</button>
                 <button id="logoutBtn" class="action-btn logout-btn">🚪 Logout</button>
             </div>
         </header>
@@ -86,7 +86,7 @@
             <table class="review-table">
                 <thead>
                     <tr>
-                        <th>Date & Time</th>
+                        <th>Date &amp; Time</th>
                         <th>Rating</th>
                         <th>Name</th>
                         <th>Phone</th>
@@ -106,7 +106,7 @@
             © Copyright 2026. All rights reserved. Designed and developed by B.L.Sejan Randinu ©
         </footer>
     </div>
-    <script src="admin.js"></script>
+    <script src="admin.js?v=3"></script>
 </body>
 
 </html>

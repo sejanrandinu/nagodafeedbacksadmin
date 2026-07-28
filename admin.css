@@ -79,22 +79,25 @@ body {
 }
 
 .login-emblem-wrapper {
-    width: 68px;
-    height: 68px;
+    width: 72px;
+    height: 72px;
     margin: 0 auto 1.25rem auto;
-    background: #F8FAFC;
+    background: #FFFFFF;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--border);
+    overflow: hidden;
+    padding: 4px;
 }
 
 .login-emblem {
-    width: 44px;
-    height: 44px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    border-radius: 50%;
 }
 
 .login-card h2 {
@@ -197,21 +200,25 @@ body {
 }
 
 .admin-logo-wrapper {
-    width: 56px;
-    height: 56px;
-    background: #F8FAFC;
-    border-radius: 16px;
+    width: 64px;
+    height: 64px;
+    background: #FFFFFF;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--border);
+    border: 2px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding: 4px;
+    overflow: hidden;
     flex-shrink: 0;
 }
 
 .admin-emblem {
-    width: 38px;
-    height: 38px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    border-radius: 50%;
 }
 
 .sub-title {
@@ -557,6 +564,10 @@ body {
         font-size: 8pt;
         background: none;
         padding: 0;
+    }
+
+    .filter-bar {
+        display: none !important;
     }
 
     .stats-container {

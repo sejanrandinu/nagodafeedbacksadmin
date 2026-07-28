@@ -4,45 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ප්‍රතිචාර පුවරුව | Reviews Dashboard</title>
+    <title>ප්‍රතිචාර පුවරුව | Admin Dashboard</title>
     <link rel="stylesheet" href="admin.css">
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/4/4b/Emblem_of_Sri_Lanka.svg"
         type="image/svg+xml">
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
-    <div class="dashboard">
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="login-modal-overlay">
+        <div class="login-card">
+            <div class="login-emblem-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Emblem_of_Sri_Lanka.svg" alt="Emblem" class="login-emblem">
+            </div>
+            <h2>පාලන පුවරුව (Admin Login)</h2>
+            <p class="login-sub">කරුණාකර මුරපදය ඇතුළත් කරන්න</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="password" id="adminPassword" placeholder="Password..." required autofocus>
+                </div>
+                <p id="loginError" class="login-error hidden">❌ වැරදි මුරපදයකි! නැවත උත්සාහ කරන්න.</p>
+                <button type="submit" class="login-submit-btn">ලොග් වන්න 🔓</button>
+            </form>
+            <a href="../nagodafeedbacks/index.html" class="portal-back-btn">← ආපසු ප්‍රතිචාර පෝරමයට</a>
+        </div>
+    </div>
+
+    <div class="dashboard hidden" id="dashboardContent">
         <header class="header">
-            <div>
-                <h2 class="sub-title">නාගොඩ ප්‍රාදේශීය ලේකම් කාර්යාලය</h2>
-                <h1>අපි ගැන අපිට කියන්න (Dashboard)</h1>
-                <p class="last-update" id="lastUpdate">අවසන් යාවත්කාලීන කිරීම: -</p>
+            <div class="header-title-area">
+                <div class="admin-logo-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Emblem_of_Sri_Lanka.svg" alt="Sri Lanka Emblem" class="admin-emblem">
+                </div>
+                <div>
+                    <h2 class="sub-title">නාගොඩ ප්‍රාදේශීය ලේකම් කාර්යාලය</h2>
+                    <h1>අපි ගැන අපිට කියන්න (Admin Dashboard)</h1>
+                    <p class="last-update" id="lastUpdate">අවසන් යාවත්කාලීන කිරීම: -</p>
+                </div>
             </div>
             <div class="header-actions">
-                <button id="refreshBtn" class="action-btn refresh-btn">Refresh Data</button>
-                <button id="printBtn" class="action-btn">Print Report</button>
-                <button id="pdfBtn" class="action-btn pdf-btn">Download PDF</button>
+                <button id="refreshBtn" class="action-btn refresh-btn">🔄 Refresh Data</button>
+                <button id="printBtn" class="action-btn print-btn">🖨️ Print Report</button>
+                <button id="pdfBtn" class="action-btn pdf-btn">📥 Download PDF</button>
+                <button id="logoutBtn" class="action-btn logout-btn">🚪 Logout</button>
             </div>
         </header>
 
         <div class="stats-container">
-            <div class="stat-card">
-                <h3>Total Reviews</h3>
+            <div class="stat-card total-card">
+                <h3>Total Reviews 📊</h3>
                 <p id="totalReviews">0</p>
             </div>
-            <div class="stat-card">
-                <h3>ඉතා හොඳයි <span class="emoji">🤩</span></h3>
+            <div class="stat-card very-happy-card">
+                <h3>ඉතා හොඳයි <span class="emoji">😀</span></h3>
                 <p id="veryHappyStats">0</p>
             </div>
-            <div class="stat-card">
+            <div class="stat-card happy-card">
                 <h3>හොඳයි <span class="emoji">😊</span></h3>
                 <p id="happyStats">0</p>
             </div>
-            <div class="stat-card">
+            <div class="stat-card bad-card">
                 <h3>අසතුටුදායකයි <span class="emoji">😞</span></h3>
                 <p id="badStats">0</p>
             </div>

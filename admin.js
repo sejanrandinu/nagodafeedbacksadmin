@@ -1,7 +1,43 @@
 const API_URL = "https://nagoda-review-api.nagodadb.workers.dev/api/reviews"; // Endpoint MUST end with /api/reviews
+const ADMIN_PASSWORD = "Nag01";
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadData();
+    checkAuth();
+
+    // Login Form Submit
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const passwordInput = document.getElementById('adminPassword');
+            const loginError = document.getElementById('loginError');
+            const loginCard = document.querySelector('.login-card');
+
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminAuth', 'true');
+                loginError.classList.add('hidden');
+                passwordInput.value = '';
+                unlockDashboard();
+            } else {
+                loginError.classList.remove('hidden');
+                if (loginCard) {
+                    loginCard.classList.add('shake');
+                    setTimeout(() => loginCard.classList.remove('shake'), 500);
+                }
+                passwordInput.focus();
+                passwordInput.select();
+            }
+        });
+    }
+
+    // Logout Button
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('adminAuth');
+            lockDashboard();
+        });
+    }
 
     document.getElementById('printBtn').addEventListener('click', () => {
         window.print();
@@ -42,6 +78,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+function checkAuth() {
+    const isAuth = sessionStorage.getItem('adminAuth') === 'true';
+    if (isAuth) {
+        unlockDashboard();
+    } else {
+        lockDashboard();
+    }
+}
+
+function unlockDashboard() {
+    const modal = document.getElementById('loginModal');
+    const content = document.getElementById('dashboardContent');
+    if (modal) modal.classList.add('hidden');
+    if (content) content.classList.remove('hidden');
+    loadData();
+}
+
+function lockDashboard() {
+    const modal = document.getElementById('loginModal');
+    const content = document.getElementById('dashboardContent');
+    if (modal) modal.classList.remove('hidden');
+    if (content) content.classList.add('hidden');
+}
 
 function updateLastUpdateTime() {
     const now = new Date();
@@ -84,7 +144,7 @@ function loadData() {
                 let displayRating = '';
                 if (review.rating === 'very-happy') {
                     badgeClass = 'badge-very-happy';
-                    displayRating = 'ඉතා හොඳයි 🤩';
+                    displayRating = 'ඉතා හොඳයි 😀';
                     veryHappyCount++;
                 } else if (review.rating === 'happy') {
                     badgeClass = 'badge-happy';

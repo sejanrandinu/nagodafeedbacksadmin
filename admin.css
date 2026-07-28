@@ -289,6 +289,49 @@ body {
     background: #475569;
 }
 
+/* Filter Bar */
+.filter-bar {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border);
+}
+
+.month-filter-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.month-filter-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.month-filter-select {
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: #F8FAFC;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.month-filter-select:focus,
+.month-filter-select:hover {
+    border-color: var(--primary);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
 /* Stats Cards */
 .stats-container {
     display: grid;

@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ප්‍රතිචාර පුවරුව | Admin Dashboard</title>
     <link rel="stylesheet" href="admin.css">
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/4/4b/Emblem_of_Sri_Lanka.svg"
-        type="image/svg+xml">
+    <link rel="icon" href="logo.jfif" type="image/jpeg">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap"
         rel="stylesheet">
@@ -19,7 +18,7 @@
     <div id="loginModal" class="login-modal-overlay">
         <div class="login-card">
             <div class="login-emblem-wrapper">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Emblem_of_Sri_Lanka.svg" alt="Emblem" class="login-emblem">
+                <img src="logo.jfif" alt="Emblem" class="login-emblem">
             </div>
             <h2>පාලන පුවරුව (Admin Login)</h2>
             <p class="login-sub">කරුණාකර මුරපදය ඇතුළත් කරන්න</p>
@@ -38,7 +37,7 @@
         <header class="header">
             <div class="header-title-area">
                 <div class="admin-logo-wrapper">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Emblem_of_Sri_Lanka.svg" alt="Sri Lanka Emblem" class="admin-emblem">
+                    <img src="logo.jfif" alt="නාගොඩ ප්‍රාදේශීය ලේකම් කාර්යාලය" class="admin-emblem">
                 </div>
                 <div>
                     <h2 class="sub-title">නාගොඩ ප්‍රාදේශීය ලේකම් කාර්යාලය</h2>
@@ -53,6 +52,16 @@
                 <button id="logoutBtn" class="action-btn logout-btn">🚪 Logout</button>
             </div>
         </header>
+
+        <!-- Month Filter Bar -->
+        <div class="filter-bar">
+            <div class="month-filter-wrapper">
+                <label for="monthFilterSelect" class="month-filter-label">📅 මාසය තෝරන්න (Filter Month):</label>
+                <select id="monthFilterSelect" class="month-filter-select">
+                    <option value="all">සියලුම මාස (All Months)</option>
+                </select>
+            </div>
+        </div>
 
         <div class="stats-container">
             <div class="stat-card total-card">

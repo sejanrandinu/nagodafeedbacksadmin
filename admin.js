@@ -1,6 +1,20 @@
 const API_URL = "https://nagoda-review-api.nagodadb.workers.dev/api/reviews"; // Endpoint MUST end with /api/reviews
 const ADMIN_PASSWORD = "Nag01";
 
+let allReviewsData = [];
+
+const sinhalaMonthNames = {
+    "01": "ජනවාරි", "02": "පෙබරවාරි", "03": "මාර්තු", "04": "අප්‍රේල්",
+    "05": "මැයි", "06": "ජූනි", "07": "ජූලි", "08": "අගෝස්තු",
+    "09": "සැප්තැම්බර්", "10": "ඔක්තෝබර්", "11": "නොවැම්බර්", "12": "දෙසැම්බර්"
+};
+
+const englishMonthNames = {
+    "01": "January", "02": "February", "03": "March", "04": "April",
+    "05": "May", "06": "June", "07": "July", "08": "August",
+    "09": "September", "10": "October", "11": "November", "12": "December"
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
 
@@ -36,6 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', () => {
             sessionStorage.removeItem('adminAuth');
             lockDashboard();
+        });
+    }
+
+    // Month Filter Event Listener
+    const monthSelect = document.getElementById('monthFilterSelect');
+    if (monthSelect) {
+        monthSelect.addEventListener('change', () => {
+            filterAndRenderData();
         });
     }
 
@@ -116,6 +138,58 @@ function updateLastUpdateTime() {
     }
 }
 
+function getMonthKey(dateStr) {
+    if (!dateStr) return null;
+    const match = dateStr.match(/^(\d{4})-(\d{2})/);
+    if (match) {
+        return `${match[1]}-${match[2]}`;
+    }
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        return `${y}-${m}`;
+    }
+    return null;
+}
+
+function populateMonthFilter(reviews) {
+    const select = document.getElementById('monthFilterSelect');
+    if (!select) return;
+
+    const currentSelected = select.value || 'all';
+    select.innerHTML = '<option value="all">සියලුම මාස (All Months)</option>';
+
+    const monthMap = new Map();
+
+    reviews.forEach(review => {
+        const key = getMonthKey(review.created_at || review.date);
+        if (key) {
+            monthMap.set(key, (monthMap.get(key) || 0) + 1);
+        }
+    });
+
+    const sortedKeys = Array.from(monthMap.keys()).sort().reverse();
+
+    sortedKeys.forEach(key => {
+        const [year, monthNum] = key.split('-');
+        const siName = sinhalaMonthNames[monthNum] || monthNum;
+        const enName = englishMonthNames[monthNum] || monthNum;
+        const count = monthMap.get(key);
+
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = `${year} ${siName} (${enName}) - [${count}]`;
+        select.appendChild(option);
+    });
+
+    if (sortedKeys.includes(currentSelected) || currentSelected === 'all') {
+        select.value = currentSelected;
+    } else {
+        select.value = 'all';
+    }
+}
+
 function loadData() {
     const tableBody = document.getElementById('tableBody');
     tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 3rem; color: #64748B;">Loading...</td></tr>';
@@ -123,63 +197,81 @@ function loadData() {
     fetch(API_URL)
         .then(res => res.json())
         .then(data => {
-            const reviews = data.reviews || [];
-            let veryHappyCount = 0;
-            let happyCount = 0;
-            let badCount = 0;
-
-            tableBody.innerHTML = '';
-
-            if (!reviews || reviews.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 3rem; color: #64748B;">No responses found yet.</td></tr>';
-                updateStats(0, 0, 0, 0);
-                updateLastUpdateTime();
-                return;
-            }
-
-            reviews.forEach(review => {
-                const row = document.createElement('tr');
-
-                let badgeClass = '';
-                let displayRating = '';
-                if (review.rating === 'very-happy') {
-                    badgeClass = 'badge-very-happy';
-                    displayRating = 'ඉතා හොඳයි 😀';
-                    veryHappyCount++;
-                } else if (review.rating === 'happy') {
-                    badgeClass = 'badge-happy';
-                    displayRating = 'හොඳයි 😊';
-                    happyCount++;
-                } else {
-                    badgeClass = 'badge-bad';
-                    displayRating = 'අසතුටුදායකයි 😞';
-                    badCount++;
-                }
-
-                row.innerHTML = `
-                <td style="white-space:nowrap; font-size:0.85rem;">${review.created_at || review.date || '-'}</td>
-                <td><span class="${badgeClass}">${displayRating}</span></td>
-                <td><strong style="color: #0F172A;">${escapeHtml(review.name)}</strong></td>
-                <td>${escapeHtml(review.phone)}</td>
-                <td>${escapeHtml(review.address)}</td>
-                <td>${escapeHtml(review.purpose)}</td>
-                <td>${escapeHtml(review.task)}</td>
-                <td>${escapeHtml(review.message)}</td>
-                <td style="text-transform:uppercase; font-size:0.75rem; color:#64748B; font-weight:700;">${review.lang || '-'}</td>
-            `;
-
-                tableBody.appendChild(row);
-            });
-
-            updateStats(reviews.length, veryHappyCount, happyCount, badCount);
+            allReviewsData = data.reviews || [];
+            populateMonthFilter(allReviewsData);
+            filterAndRenderData();
             updateLastUpdateTime();
         })
         .catch(err => {
             console.error("Error loading data:", err);
+            allReviewsData = [];
             tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 3rem; color: #EF4444;">Failed to load data. Please check your API connection.</td></tr>';
             updateStats(0, 0, 0, 0);
             updateLastUpdateTime();
         });
+}
+
+function filterAndRenderData() {
+    const select = document.getElementById('monthFilterSelect');
+    const selectedMonth = select ? select.value : 'all';
+
+    if (selectedMonth === 'all') {
+        renderReviewsTable(allReviewsData);
+    } else {
+        const filtered = allReviewsData.filter(r => getMonthKey(r.created_at || r.date) === selectedMonth);
+        renderReviewsTable(filtered);
+    }
+}
+
+function renderReviewsTable(reviews) {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+
+    let veryHappyCount = 0;
+    let happyCount = 0;
+    let badCount = 0;
+
+    if (!reviews || reviews.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 3rem; color: #64748B;">තෝරාගත් මාසය සඳහා ප්‍රතිචාර හමු නොවීය. / No responses found for selected filter.</td></tr>';
+        updateStats(0, 0, 0, 0);
+        return;
+    }
+
+    reviews.forEach(review => {
+        const row = document.createElement('tr');
+
+        let badgeClass = '';
+        let displayRating = '';
+        if (review.rating === 'very-happy') {
+            badgeClass = 'badge-very-happy';
+            displayRating = 'ඉතා හොඳයි 😀';
+            veryHappyCount++;
+        } else if (review.rating === 'happy') {
+            badgeClass = 'badge-happy';
+            displayRating = 'හොඳයි 😊';
+            happyCount++;
+        } else {
+            badgeClass = 'badge-bad';
+            displayRating = 'අසතුටුදායකයි 😞';
+            badCount++;
+        }
+
+        row.innerHTML = `
+        <td style="white-space:nowrap; font-size:0.85rem;">${review.created_at || review.date || '-'}</td>
+        <td><span class="${badgeClass}">${displayRating}</span></td>
+        <td><strong style="color: #0F172A;">${escapeHtml(review.name)}</strong></td>
+        <td>${escapeHtml(review.phone)}</td>
+        <td>${escapeHtml(review.address)}</td>
+        <td>${escapeHtml(review.purpose)}</td>
+        <td>${escapeHtml(review.task)}</td>
+        <td>${escapeHtml(review.message)}</td>
+        <td style="text-transform:uppercase; font-size:0.75rem; color:#64748B; font-weight:700;">${review.lang || '-'}</td>
+    `;
+
+        tableBody.appendChild(row);
+    });
+
+    updateStats(reviews.length, veryHappyCount, happyCount, badCount);
 }
 
 function updateStats(total, veryHappy, happy, bad) {
